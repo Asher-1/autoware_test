@@ -1,173 +1,94 @@
-# autoware.test
-autoware.test基于autoware.ai的v1.13.0版本，本人日常开发和维护的环境为ubuntu18.04。
+# Homework description
+# 练习项目1：相机雷达融合RGB点云建图（CH2, 已公开代码）
+项目说明：
 
-# 分支介绍：
-main 源代码分支，同课程内容中的源代码讲解一致，随着课程的推进持续更新中;
+1、基于开源数据集，通过外参和内参变换将点云投影到图像上，并获取对应的rgb值,进而生成彩色点云
+然后利用ndt_mapping或者其他建图算法进行建图，最终得到一张彩色点云地图;
 
-demo_dataset 数据集分支，包括点云地图，矢量地图，配置文件等相应对应不同模拟场景的demo数据集;
+2、本次作业用到的数据集位于公盘CH2文件夹下;
 
-homework 分支，包含每个章节项目练习的原始数据，参考代码等等;
+3、为了不影响大家正常思考，参考源代码暂时加密压缩，后面会把密码告诉大家;
 
-tools 工具分支，一些可能用到的小工具;
+项目要求：
 
-# 仿真环境部署
+1、优先推荐使用C++语言来进行数学（Python也可以）,可以以ros package工程的形式提交，也可以
+是普通的C++/Python项目;
 
-准备工作：
+2、作业提交截至时间为2022.3.25(不要求实现完整功能，比如规定时间内只完成点云投影部分，也可以提交);
 
-1、将网盘中课程资料里的gazebo模型库中"models.zip"下载下来并解压；
+# 练习项目2：基于官方demo进行定位优化（CH3, 已公开代码）
+项目说明：
 
-2、将解压得到的"models"文件夹放在"/home/用户名/.gazebo"下,replace原有；
+1、大家还记得我在演示官方demo的时候一播放rosbag便可以定位成功的现象了吗？正常的demo演示在定位初始化
+时要经过很长一段时间的“天旋地转”到主干道时才可以定位成功，因此本章的作业就是要求大家改进官方demo的定位
+优化，达到和我演示一样的效果；
 
-3、"./gazebo"为一个隐藏文件夹，如果没有说明没有运行过gazebo，运行一次后会自动生成；
+2、主要思路就是在起始路段建立地图，并且将其和原本的官方地图结合在一起，这里需要用到gnss的粗定位和ndt的
+精定位，这样才能良好的将新地图和老地图结合在一起，帮助我们在一开始就可以定位成功；
 
-4、将网盘中课程资料里的gazebo模型库中"actor_collisions.zip"下载并解压；
+项目要求：
 
-5、cd actor_collisions;mkdir build;cd build;cmake ..;make;
+1、优先推荐使用C++语言来进行数学（Python也可以）,可以以ros package工程的形式提交（我更建议这个项目使用
+rospackage，因为这样你更容易解析官方rosbag里面的gnss数据），也可以是普通的C++/Python项目;
 
-6、将生成的"libActorCollisionsPlugin.so"放入/usr/lib/x86_64-linux-gnu/gazebo-9/plugins/
+2、作业提交截至时间为2022.4.03(不要求实现完整功能，比如规定时间内只完成了gnss粗匹配，也可以提交);
 
-7、pull本repo下的demo_dataset分支最新版，并更新到".autoware"文件夹；
+# 练习项目3：基于欧式聚类的车辆分割（CH4, 已公开代码）
+项目说明：
 
-# 仿真1：简化版的仿真启动
+1、基于我们提供的点云数据集，基于欧式聚类（推荐，但是如果更熟悉其他聚类算法也可以用别的）实现对车辆的分割；
 
-仿真1为简易的仿真环境，车辆静止，主要便于大家进行感知模块的仿真,操作步骤如下：
+2、需要借助可视化工具，将分割结果以boundingbox形式显示出来（可以借助rviz，也可以是pcl的visualzer类）；
 
-依次启动如下文件：
+3、可以按着滤波、切割、去地面、聚类、可视化的顺序来进行（推荐但不要求）
 
-1、roslaunch autoware_quickstart_examples mini_map.launch；
+项目要求：
 
-2、roslaunch autoware_quickstart_examples mini_localization.launch;
+1、优先推荐使用C++语言来进行数学（Python也可以）,可以以ros package工程的形式提交，也可以是普通的C++/Python项目;
 
-3、rviz;
+2、作业提交截至时间为2022..xx(不要求实现完整功能，比如规定时间内只完成了地面去除，也可以提交);
 
-4、手动给定一个初始位姿；
+# 练习项目4：仿真环境下实现车辆定位初始化（CH5, 参考视频已经上传，已公开）
+项目说明：
 
-5、roslaunch autoware_quickstart_examples mini_sil_env.launch（多等一会）;
+1、本章讲解了在仿真环境下给模拟车辆添加传感器的过程，请参考这个过程给在为车辆添加gps和磁力计两种传感器；
 
-6、roslaunch autoware_quickstart_examples mini_detection.launch
+2、gps和磁力计的传感器插件见CH5课程附件"hector_gazebo_plugins"，它也是一个ros package；
 
-# 仿真2：完整版的仿真启动
+3、添加了传感器后，我们就可以通过前几门课学习的内容在仿真环境下实现定位初始化了，这样只有一启动gazebo的world就会直接定位成功，而不是需要手动来给pose（gps传感器提供初始位置，地磁计提供姿态信息）
 
-仿真2为完整的仿真环境，后面讲解的规划控制模块都是基于它,操作步骤如下：
+4、仿真环境的world请使用mini sil的world, citysim的world太大了，启动较慢
 
-依次启动如下文件：
+5、其中有些技术细节先不提，期待大家自己探索
 
-1、roslaunch autoware_quickstart_examples new_map.launch；
+项目要求：
 
-2、roslaunch autoware_quickstart_examples new_localization.launch;
+1、从本章开始的项目训练作业就需要基于仿真下的进行，而不是单独的c++项目，对大家的要求更强一些，因此作业的完成建立在仿真ok的前提下;
 
-3、rviz;
+2、本章作业因为涉及模块较多，所以不需要单独提交代码，请参考示例视频，录屏演示来进行提交（压缩后大小不超过20M）
 
-4、手动给定一个初始位姿；
+3、作业提交截至时间为2022.5.xx(不要求实现完整功能，比如规定时间内只完成了传感器添加，也可以提交);
 
-5、roslaunch vehicle_gazebo_simulation_launcher world_test_citysim_a.launch(多等一会，3-5mins都有可能)
+作业实现代码请参考我的这一次提交：https://gitee.com/ren_sixu/autoware.test/commit/7bbedb64bc8f4c57a23decaedfbe2964ca63b91b
 
-6、roslaunch vehicle_gazebo_simulation_launcher world_test_citysim_b.launch(等到前面的gazebo world启动成功且定位成功后再启动)
+# 练习项目5：仿真环境下改进star规划的决策逻辑，并实现参数调优（CH6, 参考视频待上传）
+项目说明：
 
-7、roslaunch autoware_quickstart_examples new_detection.launch
+1、开始本作业的前提是，已经完成了CH6规划模块章节的视频学习，并且能够在仿真下实现规划决策的方式1-4；
 
-决策规划方式1：基于vector map的lane来进行寻轨，遇到障碍物停止，不规划避让
+2、本章项目包含两个task，task1是基于"方式2"的决策规划逻辑改进，默认参数下avoid的功能是比较差的，经常出现规划失败的现象，请对其改进；
 
-8、roslaunch autoware_quickstart_examples new_mission_planning.launch;
+3、task2是基于"方式3"的决策规划逻辑改进，参考我课程视频中所提到的，手动astar规划完成后，行进时不再重复规划，除非指定了新的goal；
 
-9、roslaunch autoware_quickstart_examples new_motion_planning.launch;
+4、task1主要体现在调参上，需要让astar更容易规划出一条可同行的路线，这里可能包括costmap astar_avoid astar_search几个模块的参数调优，要搞清楚每次规划失败的原因，是参数阈值过于苛刻还是什么其他的原因。
 
-决策规划方式2：基于vector map的lane来进行寻轨，基于astar avoid来进行规划避让 
+5、task2主要需要对astar_navi中的代码进行改动
 
-8、roslaunch costmap_generator costmap_generator.launch;
+项目要求：
 
-9、roslaunch autoware_quickstart_examples new_mission_planning.launch;
+1、从本章开始的项目训练作业就需要基于仿真下的进行，而不是单独的c++项目，对大家的要求更强一些，因此作业的完成建立在四种规划方式的仿真ok的前提下;
 
-10、roslaunch autoware_quickstart_examples new_avoid_motion_planning.launch;
+2、本章作业因为涉及模块较多，所以不需要单独提交代码，请参考示例视频，录屏演示来进行提交（压缩后大小不超过20M），或者以word文档的形式说明实现的流程和原理；
 
-决策规划方式3：用astar算法来进行规划避让, 手动选择目的地 
-
-8、roslaunch autoware_quickstart_examples new_manual_astar_planner.launch;
-
-9、roslaunch autoware_quickstart_examples new_motion_planning.launch;
-
-决策规划方式4：基于vector map的lane来进行寻轨，基于op-planner来进行规划避让 
-
-8、roslaunch autoware_quickstart_examples new_op_planner.launch;
-
-9、roslaunch autoware_quickstart_examples new_motion_planning.launch;
-
-mpc控制：
-
-9、roslaunch autoware_quickstart_examples new_mpc_planning.launch;
-# autoware.ai环境配置
-
-安装Ubuntu 18.04（建议使用双系统，虚拟机会很卡）
-
-安装ROS Melodic（可以使用鱼香ROS，一键自动安装）
-
-```shell
-wget http://fishros.com/install -O fishros && . fishros
-```
-
-------
-
-安装Ubuntu/ROS系统依赖
-
-```shell
-sudo apt update
-sudo apt install python3-pip
-sudo apt install -y python-catkin-pkg python-rosdep ros-$ROS_DISTRO-catkin
-sudo apt install -y python3-pip python3-colcon-common-extensions python3-setuptools python3-vcstool
-pip3 install -U setuptools
-```
-
-安装CUDA 10.0，参考：https://developer.nvidia.com/cuda-10.0-download-archive?target_os=Linux&amp;target_arch=x86_64&https://github.com/Autoware-AI/autoware.ai/wiki/Source-Buildamp;target_distro=Ubuntu&amp;target_version=1804&amp;target_type=runfilelocal 
-
-
-
-使能CUDA，安装（或更新）Eigen为3.3.7版本（可能会造成系统兼容性问题），参考：https://blog.csdn.net/reasonyuanrobot/article/details/114372363
-
-
-
-创建工作空间
-
-```shell
-mkdir -p autoware.ai
-```
-
-如果能够"正常"上网，可以参考：https://github.com/Autoware-AI/autoware.ai/wiki/Source-Build
-
-
-如果因为网络问题导致下载失败，可以采用如下方法：
-
-```
-git clone -b main https://github.com/Asher-1/autoware_test.git
-```
-
-**克隆得到的autoware.test里含有src文件夹，将src文件夹整个复制到autoware.ai文件夹中，便可进行下一步操作。**
-
-使用rosdep安装依赖。
-
-```shell
-rosdep update
-```
-
-如果不能"正常"上网，这一步一般会出现问题。因此，可以使用鱼香ROS进行一键rosdep。
-
-```shell
-wget http://fishros.com/install -O fishros && . fishros
-rosdepc update
-cd autoware.ai
-rosdep install -y --from-paths src --ignore-src --rosdistro $ROS_DISTRO
-```
-
-编译工作空间（带CUDA）
-
-```shell
-AUTOWARE_COMPILE_WITH_CUDA=1 colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release
-```
-
-
-# 文件加载
-编译完成后，运行demo前，需要配置一下文件加载目录，默认的目录为在将“demo_dataset”分支的data文件夹
-clone下来后，将其放在home路径下建立的".autoware"文件夹中。
-
-
-TODO。。。。 持续更新中。。。。。。。
+3、作业提交截至时间为2022.5.xx(不要求实现完整功能，比如规定时间内只完成了task1或者task2，也可以提交);
 

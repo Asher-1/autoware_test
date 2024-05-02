@@ -1,0 +1,16 @@
+<!-- -->
+<launch>
+
+  <arg name="plane" default="7"/>
+  <arg name="yaml_path" default="$(find gnss_projection)/config/sensors_calib.yml"/>
+  <arg name="pcd_path" default="$(find gnss_projection)/map_data/"/>
+  <arg name="save_path" default="$(find gnss_projection)/map_data/"/>
+
+  <node pkg="gnss_projection" type="gnss_projection" name="gnss_projection" output="screen">
+    <param name="plane" value="$(arg plane)"/>
+    <param name="yaml_path" value="$(arg yaml_path)"/>
+    <param name="pcd_path" value="$(arg pcd_path)"/>
+    <param name="save_path" value="$(arg save_path)"/>
+  </node>
+
+</launch>
