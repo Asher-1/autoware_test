@@ -1,8 +1,8 @@
 # autoware.test
-autoware.test基于autoware.ai的v1.13.0版本，专门为参加睿慕课“Autoware自动驾驶框架源码剖析与实践”的同学们日常学习而建立。本人日常开发和维护的环境为ubuntu18.04。
+autoware.test基于autoware.ai的v1.13.0版本，本人日常开发和维护的环境为ubuntu18.04。
 
 # 分支介绍：
-master 源代码分支，同课程内容中的源代码讲解一致，随着课程的推进持续更新中;
+main 源代码分支，同课程内容中的源代码讲解一致，随着课程的推进持续更新中;
 
 demo_dataset 数据集分支，包括点云地图，矢量地图，配置文件等相应对应不同模拟场景的demo数据集;
 
@@ -134,11 +134,10 @@ mkdir -p autoware.ai
 如果能够"正常"上网，可以参考：https://github.com/Autoware-AI/autoware.ai/wiki/Source-Build
 
 
-
 如果因为网络问题导致下载失败，可以采用如下方法：
 
 ```
-git clone -b master https://gitee.com/ren_sixu/autoware.test.git
+git clone -b main https://github.com/Asher-1/autoware_test.git
 ```
 
 **克隆得到的autoware.test里含有src文件夹，将src文件夹整个复制到autoware.ai文件夹中，便可进行下一步操作。**
