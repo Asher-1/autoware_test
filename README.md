@@ -14,7 +14,9 @@ tools 工具分支，一些可能用到的小工具;
 
 准备工作：
 
-1、将网盘中课程资料里的gazebo模型库中"models.zip"下载下来并解压；
+[网盘链接](https://pan.baidu.com/s/1zJA13SP6fFi3lmb_Q9xxlA?pwd=3w8a]), 提取码: 3w8a
+
+1、将网盘链接里的gazebo模型库中"gazebo_models.zip"下载下来并解压；
 
 2、将解压得到的"models"文件夹放在"/home/用户名/.gazebo"下,replace原有；
 
