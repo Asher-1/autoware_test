@@ -1,0 +1,9 @@
+<!--note-tianyu, convert 'tf' to 'tf2_ros'-->
+<launch>
+<!-- worldからmapへのtf -->
+<node pkg="tf2_ros"  type="static_transform_publisher" name="world_to_map" args="14771 84757 -39 0 0 0 /world /map" />
+
+<!-- mapからmobilityへのtf -->
+<node pkg="tf2_ros"  type="static_transform_publisher" name="map_to_mobility" args="0 0 0 0 0 0 /map /mobility" />
+<node pkg="tf2_ros"  type="static_transform_publisher" name="base_link_to_velodyne" args="1.2 0 2 0 0 0 /base_link /velodyne" />
+</launch>
