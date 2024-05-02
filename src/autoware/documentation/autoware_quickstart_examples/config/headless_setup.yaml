@@ -1,0 +1,11 @@
+#note-tianyu
+#T_baselink_velodyne
+tf_x: 1.2
+tf_y: 0
+tf_z: 2.0
+tf_yaw: 0
+tf_pitch: 0
+tf_roll: 0
+
+localizer: velodyne
+use_sim_time: false

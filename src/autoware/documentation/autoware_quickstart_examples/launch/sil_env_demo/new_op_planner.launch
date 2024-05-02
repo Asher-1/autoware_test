@@ -1,0 +1,32 @@
+<launch>
+  <!-- setting path parameter -->
+  <arg name="topic_pose_stamped" default="/ndt_pose" />
+  <arg name="topic_twist_stamped" default="/estimate_twist" />
+
+  <!-- vel_pose_mux -->
+  <include file="$(find autoware_connector)/launch/vel_pose_connect.launch">
+    <arg name="topic_pose_stamped" value="$(arg topic_pose_stamped)" />
+    <arg name="topic_twist_stamped" value="$(arg topic_twist_stamped)" />
+  </include>
+
+  <!-- lane_navi -->
+  <include file="$(find lane_planner)/launch/lane_navi.launch" />
+
+  <!-- lane_rule -->
+  <node pkg="lane_planner" type="lane_rule" name="lane_rule" output="log" />
+
+  <!-- lane_stop -->
+  <node pkg="lane_planner" type="lane_stop" name="lane_stop" />
+
+  <!-- lane_select -->
+  <node pkg="lane_planner" type="lane_select" name="lane_select" />
+
+  <include file="$(find op_local_planner)/launch/op_common_params.launch" />
+
+  <include file="$(find op_local_planner)/launch/op_trajectory_generator.launch" />
+  <!-- 
+  <include file="$(find op_local_planner)/launch/op_motion_predictor.launch" />
+  -->
+  <include file="$(find op_local_planner)/launch/op_trajectory_evaluator.launch"/>
+
+</launch>

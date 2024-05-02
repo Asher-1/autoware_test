@@ -1,0 +1,17 @@
+<launch>
+
+  <!-- Vehicle Contorl -->
+  <include file="$(find runtime_manager)/launch_files/vehicle_socket.launch"/>
+
+  <!-- obstacle_avoid -->
+  <include file="$(find waypoint_planner)/launch/astar_avoid.launch"/>
+
+  <!-- velocity_set -->
+  <include file="$(find waypoint_planner)/launch/velocity_set.launch"/>
+
+  <include file="$(find mpc_follower)/launch/mpc_follower.launch"/>
+
+  <!-- twist_filter -->
+  <include file="$(find twist_filter)/launch/twist_filter.launch"/>
+
+</launch>

@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:property name="pi" value="3.1415926835897931" />
+
+
+  <xacro:macro name="magnetic_macro" params="suffix parent namespace x y z roll pitch yaw fps">
+    <xacro:property name="sensor_box" value="0.01" />
+    <xacro:property name="mass" value="0.01" />
+
+    <joint name="${suffix}_joint" type="fixed">
+      <origin rpy="${roll} ${pitch} ${yaw}" xyz="${x} ${y} ${z}"/>
+      <parent link="${parent}"/>
+      <child  link="${suffix}_link"/>
+    </joint>
+
+    <link name="${suffix}_link">
+    <!--<visual>
+        <geometry>
+          <box size="${sensor_box} ${sensor_box} ${sensor_box}"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <material name="red">
+          <color rgba="1.0 0.0 0.0 2.0"/>
+        </material>
+      </visual> -->
+      <inertial>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <mass value="${mass}"/>
+        <inertia ixx="${(sensor_box*sensor_box+sensor_box*sensor_box)*mass/12.0}" ixy="0.0" ixz="0.0" 
+                 iyy="${(sensor_box*sensor_box+sensor_box*sensor_box)*mass/12.0}" iyz="0.0" 
+                 izz="${(sensor_box*sensor_box+sensor_box*sensor_box)*mass/12.0}"/>
+      </inertial>
+      <!-- <collision>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <geometry>
+          <box size="${sensor_box} ${sensor_box} ${sensor_box}"/>
+        </geometry>
+      </collision> -->
+    </link>
+    <!-- magnetic -->
+    <gazebo>
+      <plugin filename="libhector_gazebo_ros_magnetic.so" name="magnetic_plugin">
+        <topicName>${suffix}</topicName>
+        <bodyName>${suffix}_link</bodyName>
+        <updateRate>${fps}</updateRate>
+        <gaussianNoise>0.002 0.002 0.002</gaussianNoise>
+        <magnitude>1.0</magnitude>
+        <referenceHeading>0.0</referenceHeading>
+        <declination>0.0</declination>
+        <inclination>60.0</inclination>
+      </plugin>
+    </gazebo>
+  </xacro:macro>  
+</robot>

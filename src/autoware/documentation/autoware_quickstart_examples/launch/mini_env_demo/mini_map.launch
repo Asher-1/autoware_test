@@ -1,0 +1,12 @@
+<launch>
+  <!--note-tianyu, load parameters for ndt_matching-->
+  <rosparam command="load" file="$(find autoware_quickstart_examples)/config/headless_setup.yaml" />
+  <!-- TF -->
+  <include file="$(env HOME)/.autoware/data/tf/sil_tf.launch"/>
+  
+  <node pkg="map_file" type="points_map_loader" name="points_map_loader" args="noupdate $(env HOME)/.autoware/data/map/sil_pointcloud_map/minimap.pcd"/>
+  <!---->
+  <node pkg="map_file" type="vector_map_loader" name="vector_map_loader" args="$(env HOME)/.autoware/data/map/mini_sil_vector_map/area.csv $(env HOME)/.autoware/data/map/mini_sil_vector_map/point.csv $(env HOME)/.autoware/data/map/mini_sil_vector_map/idx.csv $(env HOME)/.autoware/data/map/mini_sil_vector_map/line.csv $(env HOME)/.autoware/data/map/mini_sil_vector_map/wayarea.csv"/>
+  
+
+</launch>

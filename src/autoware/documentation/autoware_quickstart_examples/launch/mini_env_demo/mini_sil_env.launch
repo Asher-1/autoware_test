@@ -1,0 +1,6 @@
+<launch>
+
+  <include file="$(find vehicle_gazebo_simulation_launcher)/launch/world_test.launch">
+  </include>
+
+</launch>
