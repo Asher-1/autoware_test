@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<launch>
+  <include file="$(find rgb_mapping)/launch/load_params.launch" />
+  <node pkg="tf2_ros" type="static_transform_publisher" name="world2vehicle" args="0 0 0 0 0 0 1 world vehicle" />
+
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find rgb_mapping)/config/load_params.rviz"/>
+  <node name="rqt_tf_tree" pkg="rqt_tf_tree" type="rqt_tf_tree"/>
+
+</launch>

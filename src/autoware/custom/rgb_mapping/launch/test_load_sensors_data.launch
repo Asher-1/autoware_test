@@ -1,0 +1,12 @@
+<launch>
+  <include file="$(find rgb_mapping)/launch/load_sensors_data.launch" />
+  <node pkg="tf2_ros" type="static_transform_publisher" name="world2vehicle" args="0 0 0 0 0 0 1 world vehicle" />
+
+  <node name="rviz" pkg="rviz" type="rviz"
+    args="-d $(find rgb_mapping)/config/sensors_data.rviz"/>
+
+  <!-- 着色服务器是否已启动 -->
+  <param name="cloud_shader_server_is_on" type="bool" value="false"/>
+  <!-- 是否循环读取数据 -->
+  <param name="repeat_load_sensors_data" type="bool" value="true"/> 
+</launch>

@@ -1,0 +1,59 @@
+<launch>
+  <!-- T_baselink_velodyne -->
+  <param name="tf_x"   value="0.010524"/>
+  <param name="tf_y"   value="1.613485"/>
+  <param name="tf_z"   value="1.228857"/>
+  <param name="tf_roll"   value="0.0055624"/> <!-- 四元数 -> 欧拉角(ZYX) -->
+  <param name="tf_pitch"   value="0.0166705"/>
+  <param name="tf_yaw"   value="1.5730094"/>
+  <param name="localizer"   value="velodyne"/>
+  <param name="use_sim_time"   value="false"/>
+
+  <!-- setting path parameter for ndt -->
+  <arg name="use_imu" value="false" />
+  <arg name="incremental_voxel_update" default="false" />
+  <!-- ndt_mapping -->
+  <include file="$(find lidar_localizer)/launch/ndt_mapping.launch">
+    <arg name="use_imu" value="$(arg use_imu)" />
+    <arg name="incremental_voxel_update" value="$(arg incremental_voxel_update)" />
+  </include>
+
+  <node pkg="rosbag" type="record" name="bag_record" args="/tf /tf_static /color_cloud /points_raw /current_pose -O $(env HOME)/.autoware/rgb_mapping_data/rgb_mapping.bag"/>
+  <!-- 导入文件参数到参数服务器 -->
+  <node pkg="rgb_mapping" name="load_params_node" type="load_params_node" output="screen"/>
+  <rosparam file="$(env HOME)/.autoware/rgb_mapping_data/params/front_camera_extrinsic.yaml" ns="front_camera_extrinsic"/>
+  <rosparam file="$(env HOME)/.autoware/rgb_mapping_data/params/left_back_camera_extrinsic.yaml" ns="left_back_camera_extrinsic"/>
+  <rosparam file="$(env HOME)/.autoware/rgb_mapping_data/params/right_back_camera_extrinsic.yaml" ns="right_back_camera_extrinsic"/>
+  <rosparam file="$(env HOME)/.autoware/rgb_mapping_data/params/lidar_extrinsic.yaml" ns="lidar_extrinsic"/>
+  
+  <rosparam file="$(env HOME)/.autoware/rgb_mapping_data/params/front_camera_intrinsic.yaml" ns="front_camera_intrinsic"/>
+  <rosparam file="$(env HOME)/.autoware/rgb_mapping_data/params/left_back_camera_intrinsic.yaml" ns="left_back_camera_intrinsic"/>
+  <rosparam file="$(env HOME)/.autoware/rgb_mapping_data/params/right_back_camera_intrinsic.yaml" ns="right_back_camera_intrinsic"/>
+
+  <!-- 读取传感器数据 并将/color_cloud 重映射为 /points_raw -->
+  <node pkg="rgb_mapping" name="load_sensors_data_node" type="load_sensors_data_node" output="screen">
+    <remap from="/lidar/points_raw" to="/points_raw"/>
+  </node>
+
+  <param name="image_data_front_path" value="$(env HOME)/.autoware/rgb_mapping_data/image_data/front/"/>
+  <param name="image_data_left_back_path" value="$(env HOME)/.autoware/rgb_mapping_data/image_data/left_back"/>
+  <param name="image_data_right_back_path" value="$(env HOME)/.autoware/rgb_mapping_data/image_data/right_back"/>
+  <param name="pcd_data_path" value="$(env HOME)/.autoware/rgb_mapping_data/pcd_data/"/>
+
+  <!-- 启动着色服务器 -->
+  <node pkg="rgb_mapping" name="pointcloud_shader_server" type="pointcloud_shader_server" output="screen"/>
+  <!-- 着色服务器是否已启动 -->
+  <param name="cloud_shader_server_is_on" type="bool" value="true"/>
+
+  <!-- 将本项目的坐标系转换成ndt_mapping默认的坐标系，通过tf发布单位变换 -->
+  <node pkg="tf2_ros" type="static_transform_publisher" name="base_link2vehicle" args="0 0 0 0 0 0 1 base_link vehicle" />
+  <node pkg="tf2_ros" type="static_transform_publisher" name="lidar2velodyne" args="0 0 0 0 0 0 1 lidar velodyne" />
+  <node pkg="tf2_ros" type="static_transform_publisher" name="world2map" args="0 0 0 0 0 0 1 world map" />
+  
+  <node name="rviz" pkg="rviz" type="rviz"
+    args="-d $(find rgb_mapping)/config/rgb_mapping.rviz"/>
+  <node name="rqt_tf_tree" pkg="rqt_tf_tree" type="rqt_tf_tree"/>
+  <!-- 是否循环读取数据 -->
+  <param name="repeat_load_sensors_data" type="bool" value="false"/> 
+
+</launch>

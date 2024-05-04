@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<launch>
+  <node pkg="rgb_mapping" name="load_params_node" type="load_params_node" output="screen"/>
+  <rosparam file="$(env HOME)/.autoware/rgb_mapping_data/params/front_camera_extrinsic.yaml" ns="front_camera_extrinsic"/>
+  <rosparam file="$(env HOME)/.autoware/rgb_mapping_data/params/left_back_camera_extrinsic.yaml" ns="left_back_camera_extrinsic"/>
+  <rosparam file="$(env HOME)/.autoware/rgb_mapping_data/params/right_back_camera_extrinsic.yaml" ns="right_back_camera_extrinsic"/>
+  <rosparam file="$(env HOME)/.autoware/rgb_mapping_data/params/lidar_extrinsic.yaml" ns="lidar_extrinsic"/>
+  
+  <rosparam file="$(env HOME)/.autoware/rgb_mapping_data/params/front_camera_intrinsic.yaml" ns="front_camera_intrinsic"/>
+  <rosparam file="$(env HOME)/.autoware/rgb_mapping_data/params/left_back_camera_intrinsic.yaml" ns="left_back_camera_intrinsic"/>
+  <rosparam file="$(env HOME)/.autoware/rgb_mapping_data/params/right_back_camera_intrinsic.yaml" ns="right_back_camera_intrinsic"/>
+
+
+</launch>

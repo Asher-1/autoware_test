@@ -1,0 +1,15 @@
+<launch>
+  <node pkg="gnss_projection" name="gnss_projection" type="gnss_projection" output="screen"/>
+  <!-- TF world2map -->
+  <include file="$(env HOME)/.autoware/data/tf/tf.launch"/>
+
+  <!-- points_map_loader -->
+  <node pkg="map_file" type="points_map_loader" name="points_map_loader" args="noupdate $(env HOME)/.autoware/data/map/pointcloud_map/bin_Laser-00147_-00849.pcd $(env HOME)/.autoware/data/map/pointcloud_map/bin_Laser-00147_-00850.pcd $(env HOME)/.autoware/data/map/pointcloud_map/bin_Laser-00148_-00848.pcd  $(env HOME)/.autoware/data/map/pointcloud_map/bin_Laser-00148_-00849.pcd"/>
+  <!-- nmea2tfpose -->
+  <include file="$(find gnss_localizer)/launch/nmea2tfpose.launch"/>
+  <!-- rosbag player -->
+  <node pkg="rosbag" type="play" name="player" output="log" args="-r 1 $(env HOME)/.autoware/bags/sample_moriyama_150324.bag"/>
+  <!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(find gnss_projection)/config/default.rviz"/> -->
+
+  <param name="map_data_path" value="$(find gnss_projection)/map_data/"/>
+</launch>

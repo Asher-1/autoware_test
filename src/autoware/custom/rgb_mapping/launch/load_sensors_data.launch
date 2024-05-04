@@ -1,0 +1,14 @@
+<launch>
+  <include file="$(find rgb_mapping)/launch/load_params.launch" />
+
+  <node pkg="rgb_mapping" name="load_sensors_data_node" type="load_sensors_data_node" output="screen"/>
+
+  <param name="image_data_front_path" value="$(env HOME)/.autoware/rgb_mapping_data/image_data/front/"/>
+  <param name="image_data_left_back_path" value="$(env HOME)/.autoware/rgb_mapping_data/image_data/left_back"/>
+  <param name="image_data_right_back_path" value="$(env HOME)/.autoware/rgb_mapping_data/image_data/right_back"/>
+  <param name="pcd_data_path" value="$(env HOME)/.autoware/rgb_mapping_data/pcd_data/"/>
+  <!-- 着色服务器是否已启动 -->
+  <param name="cloud_shader_server_is_on" type="bool" value="false"/>
+  <!-- 是否循环读取数据 -->
+  <param name="repeat_load_sensors_data" type="bool" value="true"/> 
+</launch>

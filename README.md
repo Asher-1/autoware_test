@@ -156,15 +156,18 @@ rosdep update
 wget http://fishros.com/install -O fishros && . fishros
 rosdepc update
 cd autoware.ai
-rosdep install -y --from-paths src --ignore-src --rosdistro $ROS_DISTRO
+rosdepc install -y --from-paths src --ignore-src --rosdistro $ROS_DISTRO
 ```
 
-编译工作空间（带CUDA）
-
+编译工作空间（带CUDA）(if failed, please try again!)
 ```shell
-AUTOWARE_COMPILE_WITH_CUDA=1 colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release
+AUTOWARE_COMPILE_WITH_CUDA=1 colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release --continue-on-error
 ```
 
+编译更新特定的package
+```shell
+colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release --packages-select [package_name]
+```
 
 # 文件加载
 编译完成后，运行demo前，需要配置一下文件加载目录，默认的目录为在将“demo_dataset”分支的data文件夹
