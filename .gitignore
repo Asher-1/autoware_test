@@ -1,6 +1,8 @@
 # Vim
 *.swp
 *.swo
+*.DS_Store
+data/*.DS_Store
 
 # Visual Studio Code
 .vscode/
@@ -10,6 +12,9 @@
 build/
 install/
 log/
+
+# bag
+*.bag
 
 # Python
 *.pyc
