@@ -161,7 +161,7 @@ rosdepc install -y --from-paths src --ignore-src --rosdistro $ROS_DISTRO
 
 编译工作空间（带CUDA）(if failed, please try again!)
 ```shell
-AUTOWARE_COMPILE_WITH_CUDA=1 colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release --continue-on-error
+AUTOWARE_COMPILE_WITH_CUDA=1 colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release --symlink-install --continue-on-error
 ```
 
 编译更新特定的package

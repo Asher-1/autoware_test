@@ -1,6 +1,7 @@
 # Vim
 *.swp
 *.swo
+*.DS_Store
 
 # Visual Studio Code
 .vscode/
