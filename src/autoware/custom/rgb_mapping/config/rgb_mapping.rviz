@@ -76,7 +76,7 @@ Visualization Manager:
               Value: true
             right_back:
               Value: true
-            vechicle:
+            vehicle:
               Value: true
             velodyne:
               Value: true
@@ -91,7 +91,7 @@ Visualization Manager:
             world:
               map:
                 base_link:
-                  vechicle:
+                  vehicle:
                     front:
                       {}
                     left_back:

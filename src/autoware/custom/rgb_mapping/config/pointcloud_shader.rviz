@@ -70,7 +70,7 @@ Visualization Manager:
               Value: true
             right_back:
               Value: true
-            vechicle:
+            vehicle:
               Value: true
             world:
               Value: true
@@ -81,7 +81,7 @@ Visualization Manager:
           Show Names: true
           Tree:
             world:
-              vechicle:
+              vehicle:
                 front:
                   {}
                 left_back:
